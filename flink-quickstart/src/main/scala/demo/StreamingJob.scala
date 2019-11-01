@@ -11,6 +11,7 @@ import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer
 import org.apache.flink.streaming.util.serialization.SimpleStringSchema
 import org.apache.flink.streaming.api.scala._
+import org.apache.flink.api.common.typeinfo.TypeInformation
 
 
 
@@ -33,11 +34,15 @@ object StreamingJob {
     kafkaProps.setProperty("group.id", TRANSACTION_GROUP)
 
     //topic id is test ，schema is json
-    val transaction :DataStream[String] = env
+    implicit val typeInfo = TypeInformation.of(classOf[String])
+    val kafkaConsumer = new FlinkKafkaConsumer[String]("test", new SimpleStringSchema(), kafkaProps)
+    
+    val transaction = env
       .addSource(
-        new FlinkKafkaConsumer[String]("test", new SimpleStringSchema(), kafkaProps)
+        kafkaConsumer
       )
-
+   
+    // 1. calculate status kpi
     transaction.print()
 
     env.execute()

@@ -54,7 +54,7 @@ services:
       - flink-demo
 
   taskmanager:
-    image: ${FLINK_DOCKER_IMAGE_NAME:-flink}
+    image: flink:latest
     expose:
       - "6121"
       - "6122"

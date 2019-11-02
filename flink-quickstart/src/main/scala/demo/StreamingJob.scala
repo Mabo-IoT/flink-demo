@@ -43,6 +43,7 @@ object StreamingJob {
       )
    
     // 1. calculate status kpi
+    val status = transaction
     transaction.print()
 
     env.execute()

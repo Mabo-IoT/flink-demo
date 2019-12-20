@@ -7,9 +7,10 @@ import java.util.Properties
 
 import org.apache.flink.streaming.api.{CheckpointingMode, TimeCharacteristic}
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
+import org.apache.flink.streaming.api.windowing.time.Time
 // import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer08
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer
-import org.apache.flink.streaming.util.serialization.SimpleStringSchema
+import org.apache.flink.streaming.util.serialization.JSONKeyValueDeserializationSchema
 import org.apache.flink.streaming.api.scala._
 import org.apache.flink.api.common.typeinfo.TypeInformation
 
@@ -34,8 +35,8 @@ object StreamingJob {
     kafkaProps.setProperty("group.id", TRANSACTION_GROUP)
 
     //topic id is test ，schema is json
-    implicit val typeInfo = TypeInformation.of(classOf[String])
-    val kafkaConsumer = new FlinkKafkaConsumer[String]("test", new SimpleStringSchema(), kafkaProps)
+    implicit val typeInfo = TypeInformation.of(classOf[org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.node.ObjectNode])
+    val kafkaConsumer = new FlinkKafkaConsumer("test", new JSONKeyValueDeserializationSchema(true), kafkaProps)
     
     val transaction = env
       .addSource(
@@ -43,8 +44,9 @@ object StreamingJob {
       )
    
     // 1. calculate status kpi
-    val status = transaction
-    transaction.print()
+    val status = transaction.get("measurement")
+    status.print()
+    // transaction.print()
 
     env.execute()
 

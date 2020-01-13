@@ -32,13 +32,18 @@ services:
     depends_on:
       - zookeeper
   
-  go-collect:
-    image: go-collect:latest
-    networks: 
-      flink-demo:
+  data:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: data-generate:latest
+    networks:
+      - flink-demo
+    volumes:
+      - ./data-generate:/data
     depends_on:
       - kafka
-  
+
   jobmanager:
     image: flink:latest
     expose:

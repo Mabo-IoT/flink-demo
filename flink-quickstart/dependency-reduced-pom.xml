@@ -25,6 +25,9 @@
                   <exclude>org.slf4j:*</exclude>
                   <exclude>log4j:*</exclude>
                 </excludes>
+                <includes>
+                  <include>io.streamnative.connectors:*</include>
+                </includes>
               </artifactSet>
               <filters>
                 <filter>
@@ -40,6 +43,8 @@
                 <transformer>
                   <mainClass>demo.StreamingJob</mainClass>
                 </transformer>
+                <transformer />
+                <transformer />
               </transformers>
             </configuration>
           </execution>
@@ -160,6 +165,15 @@
       <name>Apache Development Snapshot Repository</name>
       <url>https://repository.apache.org/content/repositories/snapshots/</url>
     </repository>
+    <repository>
+      <id>central</id>
+      <url>https://repo1.maven.org/maven2</url>
+    </repository>
+    <repository>
+      <id>bintray-streamnative-maven</id>
+      <name>bintray</name>
+      <url>https://dl.bintray.com/streamnative/maven</url>
+    </repository>
   </repositories>
   <dependencies>
     <dependency>
@@ -225,6 +239,12 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-connector-kafka_2.11</artifactId>
+      <version>1.9.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
       <version>1.7.7</version>
@@ -239,6 +259,7 @@
   </dependencies>
   <properties>
     <scala.version>2.11.12</scala.version>
+    <PULSAR_FLINK_VERSION>2.4.2</PULSAR_FLINK_VERSION>
     <scala.binary.version>2.11</scala.binary.version>
     <flink.version>1.9.0</flink.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

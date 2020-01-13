@@ -41,13 +41,24 @@ under the License.
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
+		<!-- <repository>
+			<id>central</id>
+			<layout>default</layout>
+			<url>https://repo1.maven.org/maven2</url>
+		</repository> -->
+		<repository>
+			<id>bintray-streamnative-maven</id>
+			<name>bintray</name>
+			<url>https://dl.bintray.com/streamnative/maven</url>
+		</repository>
 	</repositories>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<flink.version>1.9.0</flink.version>
-		<scala.binary.version>2.11</scala.binary.version>
-		<scala.version>2.11.12</scala.version>
+		<scala.binary.version>2.12</scala.binary.version>
+		<scala.version>2.12.1</scala.version>
+		<PULSAR_FLINK_VERSION>2.4.1</PULSAR_FLINK_VERSION>
 	</properties>
 
 	<dependencies>
@@ -82,6 +93,11 @@ under the License.
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-connector-kafka_2.11</artifactId>
 			<version>${flink.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.streamnative.connectors</groupId>
+			<artifactId>pulsar-flink-connector_${scala.binary.version}</artifactId>
+			<version>${PULSAR_FLINK_VERSION}</version>
 		</dependency>
 		 
 
@@ -124,6 +140,10 @@ under the License.
 									<exclude>org.slf4j:*</exclude>
 									<exclude>log4j:*</exclude>
 								</excludes>
+								<includes>
+									<include>io.streamnative.connectors:*</include>
+									<!-- more libs to include here -->
+								</includes>
 							</artifactSet>
 							<filters>
 								<filter>
@@ -141,6 +161,8 @@ under the License.
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<mainClass>demo.StreamingJob</mainClass>
 								</transformer>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+       							<transformer implementation="org.apache.maven.plugins.shade.resource.PluginXmlResourceTransformer" />
 							</transformers>
 						</configuration>
 					</execution>

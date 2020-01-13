@@ -1,1 +1,15 @@
-kafka-python==1.4.7
+apache-bookkeeper-client==4.10.0
+certifi==2019.11.28
+chardet==3.0.4
+fastavro==0.22.9
+grpcio==1.26.0
+idna==2.8
+prometheus-client==0.7.1
+protobuf==3.11.2
+pulsar-client==2.4.2
+pymmh3==0.0.5
+pytz==2019.3
+ratelimit==2.2.1
+requests==2.22.0
+six==1.13.0
+urllib3==1.25.7

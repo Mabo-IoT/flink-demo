@@ -1,8 +1,7 @@
-import time 
+import pulsar
 import json
 import random
-
-from kafka import KafkaProducer
+import time
 
 
 def generate():
@@ -27,12 +26,17 @@ def generate():
 
 
 def main():
-    producer = KafkaProducer(bootstrap_servers='kafka:9092')
+    client = pulsar.Client('pulsar://standalone:6650')
+
+    producer = client.create_producer('test')
+
 
     while True:
         data = generate()
-        producer.send('test', data) 
-        print("send data to kafka~!")
+        # data = '123'
+        print(data)
+        producer.send(data) 
+        print("send data to pulsar~!")
         time.sleep(1)
 
 
